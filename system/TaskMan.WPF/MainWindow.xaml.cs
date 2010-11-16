@@ -22,6 +22,13 @@ namespace TaskMan.WPF
         public MainWindow()
         {
             InitializeComponent();
+            System.Reflection.AssemblyName currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().GetName();
+            statusText.Text = string.Format("{0} v {1}", currentAssembly.Name, currentAssembly.Version);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
