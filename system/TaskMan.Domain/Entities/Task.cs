@@ -7,10 +7,12 @@ namespace TaskMan.Domain.Entities
     {
         protected Task()
         {
-            AssignedUsers = System.Linq.Enumerable.Empty<User>();
+            
         }
 
         public int AuthorId { get; set; }
+
+        public virtual User Author { get; set; }
 
         public string Title { get; set; }
 
@@ -18,9 +20,15 @@ namespace TaskMan.Domain.Entities
 
         public DateTime? RealisationDate { get; set; }
 
-        public TaskPriority Priority { get; set; }
+        public int PriorityValue { get; set; }
 
-        public IEnumerable<User> AssignedUsers { get; set; }
+        public TaskPriority Priority
+        {
+            get { return (TaskPriority) PriorityValue; }
+            set { PriorityValue = (int) value; }
+        }
+
+        public virtual IList<UsersTask> AssignedUsers { get; set; }
 
     }
 }

@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TaskManModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="TaskManModelStoreContainer">
+          <EntitySet Name="Task" EntityType="TaskManModel.Store.Task" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="TaskManModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UsersTasks" EntityType="TaskManModel.Store.UsersTasks" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Tasks_Users" Association="TaskManModel.Store.FK_Tasks_Users">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTasks_Tasks" Association="TaskManModel.Store.FK_UsersTasks_Tasks">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="UsersTasks" EntitySet="UsersTasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTasks_Users" Association="TaskManModel.Store.FK_UsersTasks_Users">
+            <End Role="User" EntitySet="User" />
+            <End Role="UsersTasks" EntitySet="UsersTasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RealisationDate" Type="datetime2" Nullable="false" Precision="0" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="UsersTasks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Tasks_Users">
+          <End Role="User" Type="TaskManModel.Store.User" Multiplicity="1" />
+          <End Role="Task" Type="TaskManModel.Store.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTasks_Tasks">
+          <End Role="Task" Type="TaskManModel.Store.Task" Multiplicity="1" />
+          <End Role="UsersTasks" Type="TaskManModel.Store.UsersTasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersTasks">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTasks_Users">
+          <End Role="User" Type="TaskManModel.Store.User" Multiplicity="1" />
+          <End Role="UsersTasks" Type="TaskManModel.Store.UsersTasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersTasks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TaskManModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="TaskManEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tasks" EntityType="TaskManModel.Task" />
+          <EntitySet Name="Users" EntityType="TaskManModel.User" />
+          <EntitySet Name="UsersTasks" EntityType="TaskManModel.UsersTask" />
+          <AssociationSet Name="FK_Tasks_Users" Association="TaskManModel.FK_Tasks_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTasks_Tasks" Association="TaskManModel.FK_UsersTasks_Tasks">
+            <End Role="Task" EntitySet="Tasks" />
+            <End Role="UsersTask" EntitySet="UsersTasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTasks_Users" Association="TaskManModel.FK_UsersTasks_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UsersTask" EntitySet="UsersTasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="AuthorId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Content" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="RealisationDate" Nullable="false" />
+          <Property Type="Int32" Name="PriorityValue" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="TaskManModel.FK_Tasks_Users" FromRole="Task" ToRole="User" />
+          <NavigationProperty Name="AssignedUsers" Relationship="TaskManModel.FK_UsersTasks_Tasks" FromRole="Task" ToRole="UsersTask" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Login" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          </EntityType>
+        <EntityType Name="UsersTask">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="TaskManModel.FK_UsersTasks_Users" FromRole="UsersTask" ToRole="User" />
+          </EntityType>
+        <Association Name="FK_Tasks_Users">
+          <End Type="TaskManModel.User" Role="User" Multiplicity="1" />
+          <End Type="TaskManModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTasks_Tasks">
+          <End Type="TaskManModel.Task" Role="Task" Multiplicity="1" />
+          <End Type="TaskManModel.UsersTask" Role="UsersTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersTask">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTasks_Users">
+          <End Type="TaskManModel.User" Role="User" Multiplicity="1" />
+          <End Type="TaskManModel.UsersTask" Role="UsersTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersTask">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TaskManModelStoreContainer" CdmEntityContainer="TaskManEntities">
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="TaskManModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="PriorityValue" ColumnName="Priority" />
+                <ScalarProperty Name="RealisationDate" ColumnName="RealisationDate" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TaskManModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsersTasks">
+            <EntityTypeMapping TypeName="TaskManModel.UsersTask">
+              <MappingFragment StoreEntitySet="UsersTasks">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="TaskMan">
+        <EntityTypeShape EntityType="TaskManModel.Task" Width="1.5" PointX="4.25" PointY="1.5" Height="2.5571907552083331" />
+        <EntityTypeShape EntityType="TaskManModel.User" Width="1.5" PointX="0.75" PointY="1" Height="1.59568359375" />
+        <EntityTypeShape EntityType="TaskManModel.UsersTask" Width="1.5" PointX="6.625" PointY="1.125" Height="1.787985026041667" />
+        <AssociationConnector Association="TaskManModel.FK_Tasks_Users" >
+          <ConnectorPoint PointX="2.25" PointY="2.047841796875" />
+          <ConnectorPoint PointX="4.25" PointY="2.047841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="TaskManModel.FK_UsersTasks_Tasks" >
+          <ConnectorPoint PointX="5.75" PointY="2.2064925130208337" />
+          <ConnectorPoint PointX="6.625" PointY="2.2064925130208337" />
+        </AssociationConnector>
+        <AssociationConnector Association="TaskManModel.FK_UsersTasks_Users" >
+          <ConnectorPoint PointX="2.25" PointY="1.28125" />
+          <ConnectorPoint PointX="6.625" PointY="1.28125" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
